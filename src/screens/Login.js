@@ -9,6 +9,7 @@ import FormBox from '../components/auth/FormBox';
 import Input from '../components/auth/Input';
 import Separator from '../components/auth/Separator';
 import HeaderContainer from '../components/auth/HeaderContainer';
+import PageTitle from '../components/PageTitle';
 
 const GithubLogin = styled.div`
   color: #385285;
@@ -21,6 +22,7 @@ const GithubLogin = styled.div`
 function Login() {
   return (
     <AuthLayout>
+      <PageTitle title="login" />
       <FormBox>
         <HeaderContainer title="Nomadccino"></HeaderContainer>
         <form>

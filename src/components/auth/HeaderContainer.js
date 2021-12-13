@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { PropTypes } from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FatLink } from '../shared';
 import { faMugHot } from '@fortawesome/free-solid-svg-icons';
@@ -31,5 +32,15 @@ function HeaderContainer({ title, subtitle }) {
     </SHeaderContainer>
   );
 }
+
+HeaderContainer.porpTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+};
+
+HeaderContainer.defaultProps = {
+  title: '',
+  subtitle: '',
+};
 
 export default HeaderContainer;
