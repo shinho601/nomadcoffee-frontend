@@ -7,6 +7,7 @@ import BottomBox from '../components/auth/BottomBox';
 import Button from '../components/auth/Button';
 import FormBox from '../components/auth/FormBox';
 import Input from '../components/auth/Input';
+import FormError from '../components/auth/FormError';
 import Separator from '../components/auth/Separator';
 import HeaderContainer from '../components/auth/HeaderContainer';
 import PageTitle from '../components/PageTitle';
@@ -21,35 +22,39 @@ const GithubLogin = styled.div`
 `;
 
 function Login() {
-  const { register, handleSubmit } = useForm();
-  const onSubmitValid = (data) => {
-    console.log(data);
-  };
-  const onSubmitInvalid = (data) => {
-    console.log(data, 'invalid');
-  };
+  const { register, handleSubmit, formState } = useForm({
+    mode: 'onChange',
+  });
+  const onSubmitValid = (data) => {};
   return (
     <AuthLayout>
       <PageTitle title="login" />
       <FormBox>
         <HeaderContainer title="Nomadccino"></HeaderContainer>
-        <form onSubmit={handleSubmit(onSubmitValid, onSubmitInvalid)}>
+        <form onSubmit={handleSubmit(onSubmitValid)}>
           <Input
             {...register('username', {
               required: 'Username is required',
-              minLength: 5,
+              minLength: {
+                value: 5,
+                message: 'Username should be longer than 5 chars.',
+              },
             })}
             type="text"
             placeholder="Username"
+            hasError={Boolean(formState.errors?.username?.message)}
           />
+          <FormError message={formState.errors?.username?.message} />
           <Input
             {...register('password', {
               required: 'Password is required',
             })}
             type="password"
             placeholder="Password"
+            hasError={Boolean(formState.errors?.password?.message)}
           />
-          <Button type="submit" value="Log in" />
+          <FormError message={formState.errors?.password?.message} />
+          <Button type="submit" value="Log in" disabled={!formState.isValid} />
         </form>
         <Separator />
         <GithubLogin>
