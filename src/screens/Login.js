@@ -1,6 +1,8 @@
+import { gql, useMutation } from '@apollo/client';
 import styled from 'styled-components';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { logUserIn } from '../apollo';
 import routes from '../routes';
 import AuthLayout from '../components/auth/AuthLayout';
 import BottomBox from '../components/auth/BottomBox';
@@ -21,11 +23,60 @@ const GithubLogin = styled.div`
   }
 `;
 
+const LOGIN_MUTATION = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ok
+      token
+      error
+    }
+  }
+`;
+
 function Login() {
-  const { register, handleSubmit, formState } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState,
+    getValues,
+    setError,
+    clearErrors,
+  } = useForm({
     mode: 'onChange',
   });
-  const onSubmitValid = (data) => {};
+
+  const onCompleted = (data) => {
+    const {
+      login: { ok, error, token },
+    } = data;
+    if (!ok) {
+      return setError('result', {
+        message: error,
+      });
+    }
+    if (token) {
+      logUserIn(token);
+    }
+  };
+
+  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+    onCompleted,
+  });
+
+  const onSubmitValid = (data) => {
+    if (loading) {
+      return;
+    }
+    const { username, password } = getValues();
+    login({
+      variables: { username, password },
+    });
+  };
+
+  const clearLoginError = () => {
+    clearErrors('result');
+  };
+
   return (
     <AuthLayout>
       <PageTitle title="login" />
@@ -40,6 +91,7 @@ function Login() {
                 message: 'Username should be longer than 5 chars.',
               },
             })}
+            onChange={clearLoginError}
             type="text"
             placeholder="Username"
             hasError={Boolean(formState.errors?.username?.message)}
@@ -49,12 +101,18 @@ function Login() {
             {...register('password', {
               required: 'Password is required',
             })}
+            onChange={clearLoginError}
             type="password"
             placeholder="Password"
             hasError={Boolean(formState.errors?.password?.message)}
           />
           <FormError message={formState.errors?.password?.message} />
-          <Button type="submit" value="Log in" disabled={!formState.isValid} />
+          <Button
+            type="submit"
+            value={loading ? 'Loading...' : 'Log in'}
+            disabled={!formState.isValid || loading}
+          />
+          <FormError message={formState.errors?.result?.message} />
         </form>
         <Separator />
         <GithubLogin>

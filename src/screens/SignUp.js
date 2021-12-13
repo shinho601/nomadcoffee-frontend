@@ -5,10 +5,12 @@ import FormBox from '../components/auth/FormBox';
 import HeaderContainer from '../components/auth/HeaderContainer';
 import Input from '../components/auth/Input';
 import routes from '../routes';
+import PageTitle from '../components/PageTitle';
 
 function SignUp() {
   return (
     <AuthLayout>
+      <PageTitle title="sign up" />
       <FormBox>
         <HeaderContainer subtitle="Sign up to see photos and videos from your friends."></HeaderContainer>
         <form>
