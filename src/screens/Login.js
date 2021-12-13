@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faMugHot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import routes from '../routes';
 import AuthLayout from '../components/auth/AuthLayout';
@@ -9,18 +8,7 @@ import Button from '../components/auth/Button';
 import FormBox from '../components/auth/FormBox';
 import Input from '../components/auth/Input';
 import Separator from '../components/auth/Separator';
-
-const Logo = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  div {
-    margin-top: 5px;
-    font-weight: bold;
-    font-size: 2rem;
-  }
-`;
+import HeaderContainer from '../components/auth/HeaderContainer';
 
 const GithubLogin = styled.div`
   color: #385285;
@@ -34,10 +22,7 @@ function Login() {
   return (
     <AuthLayout>
       <FormBox>
-        <Logo>
-          <FontAwesomeIcon icon={faMugHot} size="3x" />
-          <div>Nomadccino</div>
-        </Logo>
+        <HeaderContainer title="Nomadccino"></HeaderContainer>
         <form>
           <Input type="text" placeholder="Username" />
           <Input type="password" placeholder="Password" />

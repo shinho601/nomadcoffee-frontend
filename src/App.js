@@ -18,7 +18,7 @@ function App() {
       <GlobalStyles />
       <Router>
         <Switch>
-          <Route path={routes.Home} exact>
+          <Route path={routes.home} exact>
             {isLoggedIn ? <Home /> : <Login />}
           </Route>
           {!isLoggedIn ? (
