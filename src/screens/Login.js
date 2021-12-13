@@ -13,6 +13,7 @@ import FormError from '../components/auth/FormError';
 import Separator from '../components/auth/Separator';
 import HeaderContainer from '../components/auth/HeaderContainer';
 import PageTitle from '../components/PageTitle';
+import { useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 const GithubLogin = styled.div`
@@ -33,7 +34,13 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
+const Notification = styled.div`
+  color: #2ecc71;
+`;
+
 function Login() {
+  const location = useLocation();
+
   const {
     register,
     handleSubmit,
@@ -43,6 +50,10 @@ function Login() {
     clearErrors,
   } = useForm({
     mode: 'onChange',
+    defaultValues: {
+      username: location?.state?.username || '',
+      password: location?.state?.password || '',
+    },
   });
 
   const onCompleted = (data) => {
@@ -82,6 +93,7 @@ function Login() {
       <PageTitle title="login" />
       <FormBox>
         <HeaderContainer title="Nomadccino"></HeaderContainer>
+        <Notification>{location?.state?.message}</Notification>
         <form onSubmit={handleSubmit(onSubmitValid)}>
           <Input
             {...register('username', {
