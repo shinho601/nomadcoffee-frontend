@@ -1,7 +1,7 @@
-import { ApolloClient, InMemoryCache, makeVar } from '@apollo/client';
+import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
 
-const TOKEN = 'token';
-const DARK_MODE = 'DARK_MODE';
+const TOKEN = "token";
+const DARK_MODE = "DARK_MODE";
 
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
 
@@ -18,7 +18,7 @@ export const logUserOut = () => {
 export const darkModeVar = makeVar(Boolean(localStorage.getItem(DARK_MODE)));
 
 export const enableDarkMode = () => {
-  localStorage.setItem(DARK_MODE, 'enabled');
+  localStorage.setItem(DARK_MODE, "enabled");
   darkModeVar(true);
 };
 
@@ -28,6 +28,9 @@ export const disableDarkMode = () => {
 };
 
 export const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri:
+    process.env.NODE_ENV === "production"
+      ? "https://nomad-coffee-backend-shinho.herokuapp.com/graphql"
+      : "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
 });
